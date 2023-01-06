@@ -40,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:maxLines="1"
-            android:hint="@string/password"
             android:id="@+id/passwordText"
             android:inputType="textPassword"/>
 
@@ -56,6 +55,6 @@
         android:text="@string/submit"
         android:layout_marginTop="6dp"
         android:padding="18dp"
-        android:background="@color/gold"/>
+        android:background="@drawable/common_button"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

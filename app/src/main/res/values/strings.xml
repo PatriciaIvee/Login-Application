@@ -9,4 +9,19 @@
     <string name="new_button">New Button</string>
     <string name="enter_name">Enter Name</string>
     <string name="second_activity">Second Activity</string>
+    <string name="register">Register</string>
+    <string name="full_name">Fullname</string>
+    <string name="subscribe">Subscribe to Email</string>
+    <string name="marshmallow">Marshmallow</string>
+    <string name="nugget">Nugget</string>
+    <string name="lollipop">Lollipop</string>
+    <string name="option">Option</string>
+    <string name="turn_on">Turn On</string>
+    <string name="turn_off">Turn Off</string>
+    
+    <string-array name="usertype">
+        <item>Administrator</item>
+        <item>Customer</item>
+        <item>Super User</item>
+    </string-array>
 </resources>
