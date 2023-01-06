@@ -24,4 +24,11 @@
         <item>Customer</item>
         <item>Super User</item>
     </string-array>
+
+    <string-array name="usertype2">
+        <item>String User 1</item>
+        <item>String User 2</item>
+        <item>String User 3</item>
+        <item>String User 4</item>
+    </string-array>
 </resources>

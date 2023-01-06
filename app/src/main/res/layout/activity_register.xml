@@ -14,6 +14,7 @@
         android:orientation="vertical">
         
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/profile_picture"
             android:layout_width="250dp"
             android:background="@color/black"
             android:layout_height="250dp"
@@ -34,8 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:maxLines="1"
-            android:hint="@string/user_name"
-            android:id="@+id/usernameText"/>
+            android:hint="@string/full_name"
+            android:id="@+id/fullNameText"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,12 +47,26 @@
             android:id="@+id/usertype"
             android:entries="@array/usertype"/>
 
-        <androidx.appcompat.widget.AppCompatRatingBar
+        <androidx.appcompat.widget.AppCompatSpinner
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:id="@+id/userSubType"
+            android:entries="@array/usertype"/>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:id="@+id/location"
+            android:entries="@array/usertype"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/rating"
             android:stepSize="0.5"
-            android:numStars="5"/>
+            android:max="5"/>
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:layout_width="match_parent"
@@ -133,7 +148,8 @@
             android:background="@drawable/common_button"
             android:text="@string/register"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/btnRegister"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
