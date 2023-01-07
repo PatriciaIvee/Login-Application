@@ -1,17 +1,31 @@
-package ph.kodego.leones.patricia.ivee.loginapplication
+package ph.kodego.leones.patricia.ivee.module_2
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
-import ph.kodego.leones.patricia.ivee.loginapplication.databinding.ActivityLoginBinding
+import ph.kodego.leones.patricia.ivee.module_2.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding:ActivityLoginBinding
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var username: String
     private lateinit var password: String
+
+    private val launchRegister = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        result ->
+        val data = result.data
+//        this one gets the intent from the register activity
+
+        Snackbar.make(binding.root, "Registered ${data!!.getStringExtra("email")}",
+            Snackbar.LENGTH_SHORT).show()
+    }
+//    When you call this activity you expect it to return something back
+//    it will catch if it was successful
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
 //            Toast.makeText(applicationContext, "Submit", Toast.LENGTH_SHORT).show()
 //           applicationContext which app will it show
         //            length short = 3sec duration length long = 5sec duration
-            var goToHome = Intent(this, HomeActivity::class.java)
+            var goToHome = Intent(this, MainActivity::class.java)
 
 //          Intent is intended to move from one activity to another.(in this case it will go to HomeActivity)
 
@@ -63,10 +77,16 @@ class LoginActivity : AppCompatActivity() {
             finish()
 //          finish() is added so that the user can't go back to previous page(for log in)
         }
+
+        binding.btnRegister.setOnClickListener {
+            var goToRegister = Intent(this, RegisterActivity::class.java)
+            launchRegister.launch(goToRegister)
+        }
+
     }
 
 
-//    override fun onBackPressed() {
+    override fun onBackPressed() {
 ////        remove super.onBackPressed() to remove backpressed on app
-//    }
+    }
 }
