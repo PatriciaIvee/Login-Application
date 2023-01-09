@@ -4,11 +4,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import ph.kodego.leones.patricia.ivee.module_2.databinding.StudentItemBinding
 import ph.kodego.leones.patricia.ivee.module_2.model.Student
 
 class StudentAdapter(var students: ArrayList<Student>)
     : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
+
+//    add button activity_main.xml
+    fun addStudent(student:Student){
+        students.add(0,student)
+        notifyItemInserted(0)
+    }
+
+    fun removeStudent(position: Int){
+        students.removeAt(position)
+        notifyItemRemoved(position)
+    }
 
     override fun getItemCount(): Int {
         return students.size
@@ -40,15 +52,32 @@ class StudentAdapter(var students: ArrayList<Student>)
         :RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener{
 
             var student = Student()
+//init will run first before bindstudent
+            init {
+                itemView.setOnClickListener(this)
+            }
 
             fun bindStudent(student:Student){
                 this.student = student
 
                 itemBinding.studentName.text ="${student.lastname}, ${student.firstname}" // or set text
+                itemBinding.deleteRowButton.setOnClickListener{
+                    Snackbar.make(itemBinding.root,
+                        "Delete by Button",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+
+                    removeStudent(adapterPosition)
+                }
             }
 
             override fun onClick(p0: View?) {
-            TODO("Not yet implemented")
+                Snackbar.make(itemBinding.root,
+                    "${student.lastname},${student.firstname}",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+
+                removeStudent(adapterPosition)
             }
 
     }

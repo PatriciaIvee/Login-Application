@@ -22,10 +22,16 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
+            android:layout_weight="6"
             android:id="@+id/student_name"
             android:textSize="24sp"/>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/delete_row_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/x"/>
 
     </LinearLayout>
 
