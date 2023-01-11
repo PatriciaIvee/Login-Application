@@ -15,3 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "Login Application"
 include ':app'
 include ':module_2'
+include ':fragments'
+include ':android_life_cycle'

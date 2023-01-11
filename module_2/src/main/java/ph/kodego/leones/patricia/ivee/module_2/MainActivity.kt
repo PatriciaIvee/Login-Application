@@ -47,7 +47,8 @@ class MainActivity : AppCompatActivity() {
         binding.addStudentButton.setOnClickListener {
             studentAdapter.addStudent(Student(
                 binding.studentFirstName.text.toString(),
-                binding.studentLastName.text.toString()))
+                binding.studentLastName.text.toString(),
+                R.drawable.photo_placeholder))
         }
 
 //        Swipe the recyclerview (individual row)
@@ -58,16 +59,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun init(){
-        students.add(Student("Dave", "Navor"))
-        students.add(Student("Victor", "Yu"))
-        students.add(Student("JP", "Soriano"))
-        students.add(Student("CJ", "Tronco"))
-        students.add(Student("Rene", "Palma"))
-        students.add(Student("Joni", "James"))
-        students.add(Student("Janreign","Aragon"))
-        students.add(Student("John Rey", "Balais"))
-        students.add(Student("James Nico", "Rara"))
-        students.add(Student("Pat Ivee", "Leones"))
-        students.add(Student("Matthew", "Mottos"))
+        students.add(Student("Dave", "Navor",R.drawable.photo_placeholder))
+        students.add(Student("Victor", "Yu", R.drawable.photo_placeholder))
+        students.add(Student("JP", "Soriano",R.drawable.photo_placeholder))
+        students.add(Student("CJ", "Tronco",R.drawable.photo_placeholder))
+        students.add(Student("Rene", "Palma",R.drawable.photo_placeholder))
+        students.add(Student("Joni", "James",R.drawable.photo_placeholder))
+        students.add(Student("Janreign","Aragon",R.drawable.photo_placeholder))
+        students.add(Student("John Rey", "Balais",R.drawable.photo_placeholder))
+        students.add(Student("James Nico", "Rara",R.drawable.photo_placeholder))
+        students.add(Student("Pat Ivee", "Leones",R.drawable.photo_placeholder))
+        students.add(Student("Matthew", "Mottos",R.drawable.photo_placeholder))
     }
 }

@@ -69,6 +69,11 @@ class StudentAdapter(var students: ArrayList<Student>)
 
                     removeStudent(adapterPosition)
                 }
+//                to set picture
+                itemBinding.profilePicture.setImageResource(student.img)
+//                to set picture from internet source
+//                Bitmap = new Bit
+//                itemBinding.profilePicture.resources
             }
 
             override fun onClick(p0: View?) {
