@@ -50,9 +50,6 @@ dependencies {
 //    viewPager
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
-// import additional functionality
-    implementation 'com.ToxicBakery.viewPager.transforms:view-pager-transforms:1.2.32@aar'
-
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
