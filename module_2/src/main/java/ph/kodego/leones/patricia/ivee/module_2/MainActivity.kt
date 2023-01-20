@@ -1,11 +1,12 @@
 package ph.kodego.leones.patricia.ivee.module_2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import ph.kodego.leones.patricia.ivee.module_2.dao.StudentDAOSQLImpl
 import ph.kodego.leones.patricia.ivee.module_2.adapter.StudentAdapter
+import ph.kodego.leones.patricia.ivee.module_2.dao.StudentDAO
 import ph.kodego.leones.patricia.ivee.module_2.databinding.ActivityMainBinding
 import ph.kodego.leones.patricia.ivee.module_2.model.Student
 import ph.kodego.leones.patricia.ivee.module_2.model.SwipeCallBack
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private var students: ArrayList<Student> = ArrayList()
     private lateinit var itemTouchHelper: ItemTouchHelper
 
+    private lateinit var dao: StudentDAO
 
 //    init {
 ////        init()
@@ -29,7 +31,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        init()
+//changed init to records
+        dao = StudentDAOSQLImpl(applicationContext)
+        students = dao.getStudents()
+//        init()
 
         studentAdapter = StudentAdapter(students)
         binding.list.layoutManager = LinearLayoutManager(applicationContext)
@@ -57,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         itemTouchHelper = ItemTouchHelper(swipeCallBack)
         itemTouchHelper.attachToRecyclerView(binding.list)
     }
-
+//Where database will be
     fun init(){
         students.add(Student("Dave", "Navor",R.drawable.photo_placeholder))
         students.add(Student("Victor", "Yu", R.drawable.photo_placeholder))
