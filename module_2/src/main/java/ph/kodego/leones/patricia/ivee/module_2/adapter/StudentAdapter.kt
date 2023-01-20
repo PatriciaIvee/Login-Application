@@ -60,7 +60,7 @@ class StudentAdapter(var students: ArrayList<Student>)
             fun bindStudent(student:Student){
                 this.student = student
 
-                itemBinding.studentName.text ="${student.lastname}, ${student.firstname}" // or set text
+                itemBinding.studentName.text ="${student.lastName}, ${student.firstName}" // or set text
                 itemBinding.deleteRowButton.setOnClickListener{
                     Snackbar.make(itemBinding.root,
                         "Delete by Button",
@@ -78,7 +78,7 @@ class StudentAdapter(var students: ArrayList<Student>)
 
             override fun onClick(p0: View?) {
                 Snackbar.make(itemBinding.root,
-                    "${student.lastname},${student.firstname}",
+                    "${student.lastName},${student.firstName}",
                     Snackbar.LENGTH_SHORT
                 ).show()
 
