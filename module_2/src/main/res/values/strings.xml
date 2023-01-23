@@ -9,4 +9,6 @@
     <string name="last_name">Last Name</string>
     <string name="Add">Add</string>
     <string name="x">X</string>
+    <string name="update">Update</string>
+    <string name="student_info">Student Info</string>
 </resources>

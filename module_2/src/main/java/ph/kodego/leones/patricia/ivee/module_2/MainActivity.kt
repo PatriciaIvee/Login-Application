@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         students = dao.getStudents()
 //        init()
 
-        studentAdapter = StudentAdapter(students)
+        studentAdapter = StudentAdapter(students,this)
         binding.list.layoutManager = LinearLayoutManager(applicationContext)
 //        You can also use Grid Layout
 //        binding.list.layoutManager = GridLayoutManager(applicationContext, 2)
@@ -50,10 +50,19 @@ class MainActivity : AppCompatActivity() {
 
 //        add student button in activity_main.xml
         binding.addStudentButton.setOnClickListener {
-            studentAdapter.addStudent(Student(
-                binding.studentFirstName.text.toString(),
-                binding.studentLastName.text.toString(),
-                R.drawable.photo_placeholder))
+            val student = Student()
+
+            student.firstName = binding.studentFirstName.text.toString()
+            student.lastName = binding.studentLastName.text.toString()
+
+            dao.addStudent(student)
+            students = dao.getStudents()
+            studentAdapter.updateStudents(students)
+
+//            studentAdapter.addStudent(Student(
+//                binding.studentFirstName.text.toString(),
+//                binding.studentLastName.text.toString(),
+//                R.drawable.photo_placeholder))
         }
 
 //        Swipe the recyclerview (individual row)

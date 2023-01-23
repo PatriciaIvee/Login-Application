@@ -53,7 +53,8 @@ class ViewPagerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(binding.viewPager2.currentItem == 0){
+        if(
+            binding.viewPager2.currentItem == 0){
             super.onBackPressed()
         }else{
             binding.viewPager2.currentItem = binding.viewPager2.currentItem - 1

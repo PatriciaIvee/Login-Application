@@ -17,6 +17,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASENAME,n
         val studentId = "id"
         val studentFirstName = "firstname"
         val studentLastName = "lastname"
+//        val yearStarted = "year_started"
     }
 
 //    Everytime you install on Create 1st time app runs
