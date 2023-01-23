@@ -10,6 +10,8 @@ import ph.kodego.leones.patricia.ivee.module_2.model.Student
 interface StudentDAO {
     fun addStudent(student: Student)
     fun getStudents() : ArrayList<Student>
+    fun updateStudent(studentId: Int, student:Student)
+    fun deleteStudent(studentId: Int)
 }
 
 //context tells which ui component is shown
@@ -69,5 +71,32 @@ class StudentDAOSQLImpl(var context: Context): StudentDAO{
 
         db.close()
         return studentList
+    }
+
+    override fun updateStudent(studentId: Int, student: Student) {
+        var databaseHandler:DatabaseHandler = DatabaseHandler(context)
+        val db = databaseHandler.writableDatabase
+
+        val contentValues = ContentValues()
+        contentValues.put(DatabaseHandler.studentFirstName, student.firstName)
+        contentValues.put(DatabaseHandler.studentLastName, student.lastName)
+
+        val values = arrayOf("$studentId")
+        val success = db.update(DatabaseHandler.tableStudents,
+        contentValues,
+        "${DatabaseHandler.studentId} = ?",
+        values)
+        db.close()
+    }
+
+    override fun deleteStudent(studentId: Int) {
+        var databaseHandler:DatabaseHandler = DatabaseHandler(context)
+        val db = databaseHandler.writableDatabase
+
+        val values = arrayOf("$studentId")
+        val success = db.delete(DatabaseHandler.tableStudents,
+            "${DatabaseHandler.studentId} = ?",
+            values)
+        db.close()
     }
 }

@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ph.kodego.leones.patricia.ivee.module_2.R
 import ph.kodego.leones.patricia.ivee.module_2.dao.DatabaseHandler
+import ph.kodego.leones.patricia.ivee.module_2.dao.StudentDAO
+import ph.kodego.leones.patricia.ivee.module_2.dao.StudentDAOSQLImpl
 import ph.kodego.leones.patricia.ivee.module_2.databinding.DialogueUpdateStudentBinding
 import ph.kodego.leones.patricia.ivee.module_2.databinding.StudentItemBinding
 import ph.kodego.leones.patricia.ivee.module_2.model.Student
@@ -85,6 +87,9 @@ class StudentAdapter(var students: ArrayList<Student>, var activity: Activity)
                         Snackbar.LENGTH_SHORT
                     ).show()
 
+                    var dao : StudentDAO = StudentDAOSQLImpl(activity.applicationContext)
+                    dao.deleteStudent(student.id)
+
                     removeStudent(adapterPosition)
                 }
 //                to set picture
@@ -102,43 +107,52 @@ class StudentAdapter(var students: ArrayList<Student>, var activity: Activity)
 
 //                removeStudent(adapterPosition)
 //                showAlertDialogue()
-                showCustomDialogue()
+//                showCustomDialogue()
 //                showCustomDialogue2()
+                showCustomDialogue3().show()
             }
 
+        private fun showCustomDialogue3(): Dialog {
+            return activity?.let {
+                val builder = AlertDialog.Builder(it)
+                var dialogueUpdateStudentBinding : DialogueUpdateStudentBinding =
+                    DialogueUpdateStudentBinding.inflate(it.layoutInflater)
+
+               with (dialogueUpdateStudentBinding){
+                   updateStudentFirstName.setText(student.firstName)
+                   updateStudentLastName.setText(student.lastName)
+               }
+
+                with(builder){
+                    setPositiveButton("Update" ,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            var dao : StudentDAO = StudentDAOSQLImpl(activity.applicationContext)
+
+
+                            student.lastName = dialogueUpdateStudentBinding.updateStudentLastName.text.toString()
+                            student.firstName = dialogueUpdateStudentBinding.updateStudentFirstName.text.toString()
+
+                            var newStudents = dao.getStudents()
+//                            students.clear()
+//                            students.addAll(newStudents)
+                            dao.updateStudent(student.id,student)
+                            updateStudents(dao.getStudents())
+                            notifyItemChanged(adapterPosition)
+//                                toast("Update DB")
+
+                            })
+                    setNegativeButton("Cancel",
+                        DialogInterface.OnClickListener { dialouge, id ->
+//                        getDialogue().cancel()
+                    })
+                    setView(dialogueUpdateStudentBinding.root)
+                    create()
+                }
+            } ?: throw IllegalStateException("Activity cannot be null")
+        }
+
             private fun showCustomDialogue(){
-//                Doesn't Work Code from Announcement
-//                return activity?.let {
-//                    val builder = AlertDialog.Builder(it)
-//                    val inflater = activity.layoutInflater;
 //
-//                    builder.setView(inflater.inflate(R.layout.dialogue_update_student,null))
-//                        .setPositiveButton("Update",
-//                        DialogInterface.OnClickListener { dialog, id ->
-//                            // sign in the user ...
-//                        })
-//                        .setNegativeButton("Cancel",
-//                            DialogInterface.OnClickListener { dialog, id ->
-////                            getDialog().cancel()
-//                            })
-//                    builder.create()
-//                }?: throw IllegalStateException("Activity cannot be null")
-
-
-//                Code ni sir During lecture pero di working
-//                var customDialogueBinding:DialogueUpdateStudentBinding
-//                val inflater = activity.layoutInflater
-//                val builder = AlertDialog.Builder(activity)
-//
-//                customDialogueBinding  = DialogueUpdateStudentBinding.inflate(inflater)
-//
-//                val customDialogView = inflater.inflate(R.layout.dialogue_update_student,null)
-//
-//                builder.setView(customDialogueBinding.root)
-//                builder.create()
-//                builder.show()
-
-//                Code after comparing James Dave's code and First code ni sir with AI
                 val dialogueBinding:DialogueUpdateStudentBinding =
                     DialogueUpdateStudentBinding.inflate(LayoutInflater.from(activity))
                 val alertDialog = AlertDialog.Builder(activity).setView(dialogueBinding.root).create()
