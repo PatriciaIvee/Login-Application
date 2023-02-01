@@ -1,6 +1,8 @@
 package ph.kodego.leones.patricia.ivee.module_2
 
 import android.os.Bundle
+import androidx.appcompat.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +36,8 @@ class MainActivity : AppCompatActivity() {
 //changed init to records
         dao = StudentDAOSQLImpl(applicationContext)
         students = dao.getStudents()
+
+        var studentContacts = dao.getStudentsWithContacts()
 //        init()
 
         studentAdapter = StudentAdapter(students,this)
@@ -70,6 +74,27 @@ class MainActivity : AppCompatActivity() {
         swipeCallBack.studentAdapter = studentAdapter
         itemTouchHelper = ItemTouchHelper(swipeCallBack)
         itemTouchHelper.attachToRecyclerView(binding.list)
+
+
+
+        //Search
+        binding.studentSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+//               Recycler View Filter Search
+//                studentAdapter.filter.filter(newText)
+                students = dao.searchStudentsByLastName(newText!!)
+                studentAdapter.updateStudents(students)
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                studentAdapter.filter.filter(query)
+                return false
+            }
+
+        })
     }
 //Where database will be
     fun init(){

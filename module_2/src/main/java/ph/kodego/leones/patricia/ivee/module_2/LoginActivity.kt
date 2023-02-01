@@ -7,12 +7,14 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import ph.kodego.leones.patricia.ivee.module_2.databinding.ActivityLoginBinding
+import ph.kodego.leones.patricia.ivee.module_2.utility.PreferenceUtility
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var username: String
     private lateinit var password: String
+    private lateinit var preferenceUtility: PreferenceUtility
 
     private val launchRegister = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -33,6 +35,13 @@ class LoginActivity : AppCompatActivity() {
 //        setContentView(R.layout.activity_login) == this is the previous way to do it
         setContentView(binding.root)
 
+//        context contains data where it runs application context
+        preferenceUtility = PreferenceUtility(applicationContext)
+
+        binding.usernameText.setText(preferenceUtility.getStringPreferences("username"))
+        binding.passwordText.setText(preferenceUtility.getStringPreferences("password"))
+
+
 //        binding.title.setText("Main Page")
 //        binding.title.text = "New Main Page"
 
@@ -41,6 +50,9 @@ class LoginActivity : AppCompatActivity() {
             username = binding.usernameText.text.toString()
             password = binding.passwordText.text.toString()
 
+//            You can save top ten users something like that
+            preferenceUtility.saveStringPreferences("username", binding.usernameText.text.toString())
+            preferenceUtility.saveStringPreferences("password", binding.passwordText.text.toString())
 
 //            Snackbar.make(binding.root,"$username - $password", Snackbar.LENGTH_SHORT).show()
 

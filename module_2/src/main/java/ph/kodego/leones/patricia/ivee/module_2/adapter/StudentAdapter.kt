@@ -3,18 +3,16 @@ package ph.kodego.leones.patricia.ivee.module_2.adapter
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ph.kodego.leones.patricia.ivee.module_2.R
-import ph.kodego.leones.patricia.ivee.module_2.dao.DatabaseHandler
 import ph.kodego.leones.patricia.ivee.module_2.dao.StudentDAO
 import ph.kodego.leones.patricia.ivee.module_2.dao.StudentDAOSQLImpl
 import ph.kodego.leones.patricia.ivee.module_2.databinding.DialogueUpdateStudentBinding
@@ -22,7 +20,11 @@ import ph.kodego.leones.patricia.ivee.module_2.databinding.StudentItemBinding
 import ph.kodego.leones.patricia.ivee.module_2.model.Student
 
 class StudentAdapter(var students: ArrayList<Student>, var activity: Activity)
-    : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
+    : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>(),
+    Filterable{
+
+    var filteredStudents:List<Student> = ArrayList<Student>()
+    var all_records = ArrayList<Student>()
 
 //    add button activity_main.xml
     fun addStudent(student:Student){
@@ -41,6 +43,14 @@ class StudentAdapter(var students: ArrayList<Student>, var activity: Activity)
         notifyDataSetChanged()
 
     }
+    
+//    fun filterStudent(searchString:String){
+//        //pangit na way
+//        var newSet = students.filter{it.lastName.contains(searchString)}
+//        students.clear()
+//        students.addAll(newSet)
+//        notifyDataSetChanged()
+//    }
 
     override fun getItemCount(): Int {
         return students.size
@@ -53,6 +63,11 @@ class StudentAdapter(var students: ArrayList<Student>, var activity: Activity)
         parent: ViewGroup,
         viewtype: Int
     ):StudentAdapter.StudentViewHolder {
+
+        //NewFilterStudents CRUD
+        all_records.clear()
+        all_records.addAll(students)
+
          val itemBinding = StudentItemBinding //ItemAccountBinding
              .inflate(
                  LayoutInflater.from(parent.context),
@@ -155,9 +170,8 @@ class StudentAdapter(var students: ArrayList<Student>, var activity: Activity)
 //
                 val dialogueBinding:DialogueUpdateStudentBinding =
                     DialogueUpdateStudentBinding.inflate(LayoutInflater.from(activity))
-                val alertDialog = AlertDialog.Builder(activity).setView(dialogueBinding.root).create()
+                    val alertDialog = AlertDialog.Builder(activity).setView(dialogueBinding.root).create()
                     alertDialog.show()
-
             }
 
             private fun showCustomDialogue2(){
@@ -205,6 +219,36 @@ class StudentAdapter(var students: ArrayList<Student>, var activity: Activity)
 
             private fun toast(text:String) = Toast.makeText(activity.applicationContext,text, Toast.LENGTH_SHORT).show()
     }
-// the purpose of ViewHolder is to bind ui components,
+
+    // the purpose of ViewHolder is to bind ui components,
     // behavior of each rows and data inside each rows organize the data where they will be placed
+
+//    Filter something during search
+    override fun getFilter(): Filter {
+        return object : Filter(){
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val searchString = constraint.toString()
+
+                if (searchString.trim().length == 0){
+
+                }else{
+                    filteredStudents = students.filter{it.lastName.contains(searchString)}
+                }
+                return FilterResults().apply { values = filteredStudents }
+            }
+
+//            Display Results
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                students = if (results!!.values == null){
+                    all_records
+                }else{
+                    results.values as ArrayList<Student>
+                }
+
+                notifyDataSetChanged()
+            }
+
+        }
+    }
+
 }

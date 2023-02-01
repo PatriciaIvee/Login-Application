@@ -49,10 +49,19 @@
         android:layout_weight="1"
         android:text="@string/Add"/>
 
+        <androidx.appcompat.widget.SearchView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:maxLines="1"
+            android:layout_weight="1"
+            android:hint="@string/search"
+            android:id="@+id/student_search"
+            app:defaultQueryHint="Search Students"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7"
+        android:layout_weight="6"
         android:text="Hello World!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

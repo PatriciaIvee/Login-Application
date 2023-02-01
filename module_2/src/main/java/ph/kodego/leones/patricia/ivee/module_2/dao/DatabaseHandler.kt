@@ -17,7 +17,19 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASENAME,n
         val studentId = "id"
         val studentFirstName = "firstname"
         val studentLastName = "lastname"
+        val yearStarted = "year_started"
+        val course = "course"
 //        val yearStarted = "year_started"
+
+
+    // Contacts Class
+//    Ordinality Students can have multiple contacts or student to no contacts at all
+//    Normalization
+        val tableContacts = "student_contacts"
+        val contactId = "id"
+        val studentContactId = "student_id"
+        val contactType = "contact_type"
+        val contactDetails = "contact_details"
     }
 
 //    Everytime you install on Create 1st time app runs
@@ -42,7 +54,18 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASENAME,n
         db?.execSQL("Insert into $tableStudents($studentLastName,$studentFirstName)values('Monroe', 'Marilyn')")
         db?.execSQL("Insert into $tableStudents($studentLastName,$studentFirstName)values('Carlos', 'Juan')")
 
-    }
+    val CREATECONTACTSTABLE =
+        "CREATE TABLE $tableContacts " +
+                "($contactId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$studentContactId INTEGER, " +
+                "$contactType TEXT, " +
+                "$contactDetails TEXT)"
+    db?.execSQL(CREATECONTACTSTABLE)
+
+    db?.execSQL("Insert into $tableContacts($studentContactId,$contactType,$contactDetails)values(1, 'FACEBOOK', '@MacValmores/facebook/asdasf')")
+
+
+}
 //Primary Key is the UNIQUE IDENTIFIER
 //    AUTOINCREMENT automatically sets Primary Key (only works for numerical Primary Key values)
 

@@ -8,9 +8,15 @@ class Student(var firstName:String = "Unknown", var lastName:String = "Unknown",
 
     var id: Int = 0
     var yearStarted: Int = 0
+    var course: String = ""
 
 //    constructor for default values (firstname, lastname, profile picture)
     constructor(): this("","", R.drawable.photo_placeholder)
 
 
+}
+
+class StudentContacts(){
+    var student:Student = Student()
+    var contacts = ArrayList<Contact>()
 }
