@@ -15,6 +15,7 @@ interface StudentDAO {
     fun updateStudent(studentId: Int, student:Student)
     fun deleteStudent(studentId: Int)
     fun searchStudentsByLastName(search:String): ArrayList<Student>
+    fun getStudentsByYearAndCourse(year: Int, course:String): ArrayList<Student>
 }
 
 //context tells which ui component is shown
@@ -152,12 +153,67 @@ class StudentDAOSQLImpl(var context: Context): StudentDAO{
         return studentList
     }
 
+    override fun getStudentsByYearAndCourse(year: Int, course: String): ArrayList<Student> {
+        val studentList: ArrayList<Student> = ArrayList()
+//        Find string in the columns (search)
+        val columns  = arrayOf(DatabaseHandler.studentLastName,
+            DatabaseHandler.studentFirstName,
+            DatabaseHandler.studentId,
+            DatabaseHandler.yearStarted,
+            DatabaseHandler.course)
+
+        val databaseHandler:DatabaseHandler = DatabaseHandler(context)
+        val db = databaseHandler.readableDatabase
+        var cursor: Cursor? = null
+
+        try {
+//            Search through query(Database) realtime database
+            cursor = db.query(DatabaseHandler.tableStudents,
+                columns,
+//                parang wild search
+//                Single Arg or parameter if only one Arg else more put more lol
+                "${DatabaseHandler.yearStarted}= ? and ${DatabaseHandler.course}= ? ",
+//                If you want multiple condition or Arguments
+                arrayOf("$year","$course"),
+                null,
+                null,
+                null
+//                DatabaseHandler.studentLastName
+            )
+        }catch (e:SQLiteException) {
+            db.close()
+            return ArrayList()
+        }
+
+        var student = Student()
+        if (cursor.moveToFirst()) {
+            do {
+                student = Student()
+
+                student.lastName = cursor.getString(0)
+                student.firstName = cursor.getString(1)
+                student.id = cursor.getInt(2)
+                student.yearStarted = cursor.getInt(3)
+                student.course = cursor.getString(4)
+
+                studentList.add(student)
+
+            }while (cursor.moveToNext())
+        }
+
+
+        db.close()
+        return studentList
+    }
+
     override fun getStudentsWithContacts()  : ArrayList<StudentContacts>{
         val studentWithContactsList: ArrayList<StudentContacts> = ArrayList()
 // Search RecyclerView
         val selectQuery = "SELECT ${DatabaseHandler.studentLastName}," +
                 "${DatabaseHandler.studentFirstName}, " +
-                "${DatabaseHandler.studentId} " +
+                "${DatabaseHandler.studentId}, " +
+                "${DatabaseHandler.yearStarted}, " +
+                "${DatabaseHandler.course} " +
                 "FROM ${DatabaseHandler.tableStudents}"
 
         val databaseHandler:DatabaseHandler = DatabaseHandler(context)

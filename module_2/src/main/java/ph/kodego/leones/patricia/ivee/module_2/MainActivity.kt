@@ -35,10 +35,11 @@ class MainActivity : AppCompatActivity() {
 
 //changed init to records
         dao = StudentDAOSQLImpl(applicationContext)
-        students = dao.getStudents()
+//        students = dao.getStudents()
 
         var studentContacts = dao.getStudentsWithContacts()
 //        init()
+        students = dao.getStudentsByYearAndCourse(1999, "Tourism Management")
 
         studentAdapter = StudentAdapter(students,this)
         binding.list.layoutManager = LinearLayoutManager(applicationContext)
