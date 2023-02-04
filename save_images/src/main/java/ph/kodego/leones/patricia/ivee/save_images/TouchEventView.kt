@@ -113,7 +113,7 @@ class TouchEventView (context:Context,attrs: AttributeSet):AppCompatImageView(co
 
     fun loadImage(){
         val externalFolder = "${context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)}${File.separator}sample_images"
-        var imageFile = File(externalFolder, "sample(1).jpg")
+        var imageFile = File(externalFolder, "KODEGO_IMAGE-141231031.jpg")
         var newBitmap :Bitmap? = null
 
         var fileInputStream = FileInputStream(imageFile)
@@ -150,14 +150,18 @@ class TouchEventView (context:Context,attrs: AttributeSet):AppCompatImageView(co
         val date = Date()
         val fileInfo = "${date.month}${date.date}${date.year}${date.hours}${date.minutes}"
 
+
         val externalFolder = "${context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)}${File.separator}sample_images"
+
+        val saveFile:File = File(externalFolder, "KODEGO_IMAGE-${fileInfo}.jpg")
+
         if(!File(externalFolder).exists()){
             File(externalFolder).mkdir()
             Log.i("FILES", "Directory created : ${externalFolder}")
 
+        } else{
+            Log.i("FILES", "${saveFile}")
         }
-
-        val saveFile:File = File(externalFolder, "KODEGO_IMAGE-${fileInfo}.jpg")
 
         try {
             val fileOutputStream = FileOutputStream(saveFile)

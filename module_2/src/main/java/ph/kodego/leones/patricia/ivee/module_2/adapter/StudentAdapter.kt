@@ -191,30 +191,30 @@ class StudentAdapter(var students: ArrayList<Student>, var activity: Activity)
             }
 
 //        Dialogue box programmatically
-//            private fun showAlertDialogue(){
-////                Where will the dialogue show (current activity in loaded)
-//                val alertDialog = AlertDialog.Builder(activity)
-//                alertDialog.apply{
-////
-////                    Can put an icon
-//                    setIcon(R.drawable.photo_placeholder)
-////                    You can put title and message
-//                    setTitle("Student Background")
-//                    setMessage("Student Record")
-////                    You can put up to three buttons
-//                    setPositiveButton("Positive"){ _, _ ->
-//                        toast("clicked positive Button")
+            private fun showAlertDialogue(){
+//                Where will the dialogue show (current activity in loaded)
+                val alertDialog = AlertDialog.Builder(activity)
+                alertDialog.apply{
 //
-//                    }
-//                    setNegativeButton("Negative"){ _, _ ->
-//                        toast("clicked negative Button")
-//                    }
-//                    setNeutralButton("Neutral") { _, _ ->
-//                        toast("clicked Neutral Button")
-//                    }
-//                } .create().show()
-//
-//            }
+//                    Can put an icon
+                    setIcon(R.drawable.photo_placeholder)
+//                    You can put title and message
+                    setTitle("Student Background")
+                    setMessage("Student Record")
+//                    You can put up to three buttons
+                    setPositiveButton("Positive"){ _, _ ->
+                        toast("clicked positive Button")
+
+                    }
+                    setNegativeButton("Negative"){ _, _ ->
+                        toast("clicked negative Button")
+                    }
+                    setNeutralButton("Neutral") { _, _ ->
+                        toast("clicked Neutral Button")
+                    }
+                } .create().show()
+
+            }
 
 
             private fun toast(text:String) = Toast.makeText(activity.applicationContext,text, Toast.LENGTH_SHORT).show()
