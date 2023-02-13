@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         dao = StudentDAOSQLImpl(applicationContext)
 //        students = dao.getStudents()
 
-        var studentContacts = dao.getStudentsWithContacts()
+        var s = dao.getStudentsWithContacts()
 //        init()
         students = dao.getStudentsByYearAndCourse(1999, "Tourism Management")
 

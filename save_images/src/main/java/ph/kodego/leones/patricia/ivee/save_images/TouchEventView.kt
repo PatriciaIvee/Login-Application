@@ -142,6 +142,30 @@ class TouchEventView (context:Context,attrs: AttributeSet):AppCompatImageView(co
 
     fun loadImage(uri: Uri){
         var newBitmap:Bitmap? = null
+
+        val bmpFactoryOptions = BitmapFactory.Options()
+        bmpFactoryOptions.inJustDecodeBounds = true
+
+        val widthRatio =
+            ceil((0 / viewWidth).toDouble()).toInt()
+        val heightRatio =
+            ceil((0 / viewHeight).toDouble()).toInt()
+        if (heightRatio > widthRatio) {
+            bmpFactoryOptions.inSampleSize = heightRatio
+        } else {
+            bmpFactoryOptions.inSampleSize = heightRatio
+        }
+        bmpFactoryOptions.inJustDecodeBounds = false
+        newBitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri),
+            null, bmpFactoryOptions)
+
+        path.reset()
+
+        extraBitmap = createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888)
+        extraCanvas = Canvas(extraBitmap)
+        extraCanvas.drawBitmap(newBitmap!!, 0f,0f, paint)
+        invalidate()
+
     }
 
 

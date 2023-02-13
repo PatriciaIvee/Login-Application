@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteException
+import android.util.Log
 import ph.kodego.leones.patricia.ivee.module_2.model.Contact
 import ph.kodego.leones.patricia.ivee.module_2.model.Student
 
@@ -59,6 +60,7 @@ class ContactDAOSQLImpl(var context: Context): ContactDAO{
                 null
             )
         }catch (e: SQLiteException) {
+
             db.close()
             return ArrayList()
         }
