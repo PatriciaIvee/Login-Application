@@ -11,9 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.video.Recording
+import androidx.camera.video.*
+import androidx.camera.video.VideoCapture
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -44,7 +46,7 @@ class CameraActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityCameraBinding
     private var imageCapture:ImageCapture? =null
-    private var videoCapture: VideoCapture? = null
+    private var videoCapture: VideoCapture<Recorder>? = null
 
     private var recording: Recording? = null
     private lateinit var cameraExecutor: ExecutorService
@@ -151,9 +153,6 @@ class CameraActivity : AppCompatActivity() {
     }
 
 
-    private fun captureVideo(){}
-
-
     private fun startCamera(){
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -165,8 +164,12 @@ class CameraActivity : AppCompatActivity() {
                     it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
                 }
 
-            imageCapture = ImageCapture.Builder().build()
+//            imageCapture = ImageCapture.Builder().build()
 
+            val recorder = Recorder.Builder()
+                .setQualitySelector(QualitySelector.from(Quality.HIGHEST))
+                .build()
+            videoCapture = VideoCapture.withOutput(recorder)
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -181,5 +184,75 @@ class CameraActivity : AppCompatActivity() {
                 Log.e(TAG, "Use case binding failed", exc)
             }
         }, ContextCompat.getMainExecutor(this))
+
+
+
+    }
+
+    private fun captureVideo(){
+        val videoCapture = this.videoCapture ?: return
+        binding.videoCaptureButton.isEnabled = false
+
+        val curRecording = recording
+        if (curRecording != null) {
+            curRecording.stop()
+            return
+        }
+
+        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
+            .format(System.currentTimeMillis())
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME,name)
+            put(MediaStore.MediaColumns.MIME_TYPE,"video/mp4")
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/CameraX-Videos")
+            }
+
+        }
+
+        val mediaStoreOutputOptions = MediaStoreOutputOptions
+            .Builder(contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+            .setContentValues(contentValues)
+            .build()
+
+        recording = videoCapture.output
+            .prepareRecording(this, mediaStoreOutputOptions)
+            .apply{
+                if (PermissionChecker.checkSelfPermission(this@CameraActivity,
+                    Manifest.permission.RECORD_AUDIO) ==
+                        PermissionChecker.PERMISSION_GRANTED)
+                {
+                    withAudioEnabled()
+                }
+            }
+            .start(ContextCompat.getMainExecutor(this)){ recordEvent ->
+                when(recordEvent){
+                    is VideoRecordEvent.Start -> {
+                        binding.videoCaptureButton.apply{
+                            text = getString(R.string.stop_capture)
+                            isEnabled = true
+                        }
+                    }
+                    is VideoRecordEvent.Finalize -> {
+                        if(!recordEvent.hasError()){
+                            val msg = "Video capture succeeded : " +
+                                    "${recordEvent.outputResults.outputUri}"
+                            Toast.makeText(baseContext,msg, Toast.LENGTH_SHORT)
+                                .show()
+                            Log.d(TAG, msg)
+                        } else {
+                            recording?.close()
+                            recording = null
+                            Log.e(TAG, "Video capture ends with error:" +
+                                    "${recordEvent.error}")
+                        }
+                        binding.videoCaptureButton.apply {
+                            text = "Start Capture"
+                            isEnabled = true
+                        }
+                    }
+                }
+            }
     }
 }

@@ -18,7 +18,8 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASENAME,n
         val TABLE_IMAGES_DATA = "data"
 
         val TABLE_IMAGES_TEXT = "table_images"
-        val TABLE_IMAGES_TESXT_ID = "id"
+        val TABLE_IMAGES_TEXT_ID = "id"
+        val TABLE_IMAGES_TEXT_NAME = "name"
         val TABLE_IMAGES_TEXT_DATA = "data"
 
     }
@@ -34,7 +35,8 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,DATABASENAME,n
 
         val CREATE_TABLE_IMAGES_TEXT =
             "CREATE TABLE $TABLE_IMAGES_TEXT " +
-                    "($TABLE_IMAGES_TESXT_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "($TABLE_IMAGES_TEXT_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "$TABLE_IMAGES_TEXT_NAME TEXT," +
                     "$TABLE_IMAGES_TEXT_DATA TEXT)"
         db?.execSQL(CREATE_TABLE_IMAGES_TEXT)
 

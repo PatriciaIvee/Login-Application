@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">save_images</string>
+    <string name="stop_capture">Stop Capture</string>
 </resources>

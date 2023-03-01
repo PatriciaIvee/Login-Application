@@ -2,22 +2,23 @@ package ph.kodego.leones.patricia.ivee.save_images
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteException
 import android.graphics.*
 import android.graphics.Bitmap.CompressFormat
 import android.graphics.Bitmap.createBitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ViewConfiguration
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 import java.util.*
 import kotlin.math.ceil
 
@@ -229,5 +230,88 @@ class TouchEventView (context:Context,attrs: AttributeSet):AppCompatImageView(co
        }
 
    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun saveImageInDatabase(name:String){
+        val stream = ByteArrayOutputStream()
+        extraBitmap.compress(CompressFormat.JPEG, 95, stream)
+        val bytes = stream.toByteArray()
+        var data = Base64.getEncoder().encodeToString(bytes)
+
+        val values = ContentValues().apply {
+            put(DatabaseHandler.TABLE_IMAGES_TEXT_NAME, name)
+            put(DatabaseHandler.TABLE_IMAGES_TEXT_DATA, "image/jpeg")
+
+        }
+
+        var databaseHandler:DatabaseHandler = DatabaseHandler(context)
+        val db = databaseHandler.writableDatabase
+
+        val success = db.insert(DatabaseHandler.TABLE_IMAGES_TEXT, null, values)
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun loadImageInDatabase(name:String) {
+        var imageData: String = ""
+
+        val columns = arrayOf(DatabaseHandler.TABLE_IMAGES_TEXT_DATA,
+            DatabaseHandler.TABLE_IMAGES_TEXT_NAME,
+            DatabaseHandler.TABLE_IMAGES_TEXT_ID)
+
+
+        var databaseHandler:DatabaseHandler =DatabaseHandler(context)
+        val db = databaseHandler.readableDatabase
+        var cursor: Cursor? = null
+
+        try{
+            cursor = db.query(DatabaseHandler.TABLE_IMAGES_TEXT,
+            columns,
+            "${DatabaseHandler.TABLE_IMAGES_TEXT_NAME} like '%${name}%",
+            null,
+            null,
+            null,
+            null)
+        } catch (e:SQLiteException) {
+            db.close()
+        }
+
+        if (cursor!!.moveToFirst()){
+            do{
+                imageData = cursor.getString(0)
+            }while (cursor!!.moveToNext())
+        }
+
+        if (imageData.isNotEmpty()){
+            var imageByte = Base64.getDecoder()!!.decode(imageData)
+            var newBitmap:Bitmap? = null
+
+
+            val bmpFactoryOptions = BitmapFactory.Options()
+            bmpFactoryOptions.inJustDecodeBounds = true
+
+            val widthRatio =
+                ceil((0 / viewWidth).toDouble()).toInt()
+            val heightRatio =
+                ceil((0 / viewHeight).toDouble()).toInt()
+            if (heightRatio > widthRatio) {
+                bmpFactoryOptions.inSampleSize = heightRatio
+            } else {
+                bmpFactoryOptions.inSampleSize = heightRatio
+            }
+            bmpFactoryOptions.inJustDecodeBounds = false
+
+            var byteArrayInputStream =  ByteArrayInputStream(imageByte)
+
+            newBitmap = BitmapFactory.decodeStream(byteArrayInputStream, null, bmpFactoryOptions)
+            path.reset()
+            extraBitmap = createBitmap(newBitmap!!.width,newBitmap.height, Bitmap.Config.ARGB_8888)
+            extraCanvas = Canvas(extraBitmap)
+            extraCanvas.drawBitmap(newBitmap!!,0f,0f,paint)
+        }
+
+
+    }
 
 }

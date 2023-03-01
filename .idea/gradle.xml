@@ -11,6 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/android_life_cycle" />
+            <option value="$PROJECT_DIR$/apis_retrofit_module" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/fragments" />
             <option value="$PROJECT_DIR$/module_2" />
