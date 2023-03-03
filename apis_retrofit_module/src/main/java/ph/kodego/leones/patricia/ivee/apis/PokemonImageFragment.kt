@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import ph.kodego.leones.patricia.ivee.apis.databinding.FragmentPokemonImageBinding
@@ -22,16 +23,35 @@ class PokemonImageFragment : Fragment() {
             var imageUrl : String? = intent!!.getStringExtra("data")
             Log.d("PokemonImageFragment", "Received image URL: $imageUrl")
 
-            //if(imageUrl != null)
-            imageUrl?.let {
-                Picasso
-                    .with(activity!!.applicationContext)
-                    .load(it)
+            if (imageUrl != null) {
+                Picasso.with(requireContext())
+                    .load(imageUrl)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .placeholder(R.drawable.eggtwo)
+                    .placeholder(R.drawable.cracked_egg)
                     .error(R.drawable.eggtwo)
-                    .into(binding!!.pokemonImage)
+                    .into(binding!!.pokemonImage, object : Callback {
+                        override fun onSuccess() {
+                            Log.d("PokemonImageFragment", "Successfully loaded image")
+                        }
+
+                        override fun onError() {
+                            Log.e("PokemonImageFragment", "Error loading image")
+                        }
+                    })
+            } else {
+                Log.e("PokemonImageFragment", "No image URL found in intent")
             }
+
+//            //if(imageUrl != null)
+//            imageUrl?.let {
+//                Picasso
+//                    .with(activity!!.applicationContext)
+//                    .load(it)
+//                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+//                    .placeholder(R.drawable.cracked_egg)
+//                    .error(R.drawable.eggtwo)
+//                    .into(binding!!.pokemonImage)
+//            }
         }
 
     }
@@ -64,22 +84,3 @@ class PokemonImageFragment : Fragment() {
 
 
 }
-
-//    if (imageUrl != null) {
-//        Picasso.with(requireContext())
-//            .load(imageUrl)
-//            .memoryPolicy(MemoryPolicy.NO_CACHE)
-//            .placeholder(R.drawable.egg)
-//            .error(R.drawable.cracked_egg)
-//            .into(binding!!.pokemonImage, object : Callback {
-//                override fun onSuccess() {
-//                    Log.d("PokemonImageFragment", "Successfully loaded image")
-//                }
-//
-//                override fun onError() {
-//                    Log.e("PokemonImageFragment", "Error loading image")
-//                }
-//            })
-//    } else {
-//        Log.e("PokemonImageFragment", "No image URL found in intent")
-//    }

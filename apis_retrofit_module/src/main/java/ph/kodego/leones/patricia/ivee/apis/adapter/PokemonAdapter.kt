@@ -28,8 +28,7 @@ class PokemonAdapter (private val context: Context,
 
                 Intent().also{
                     Log.d("Pokemon URL", "${pokemonlist[position].url}")
-
-                    it.action = "ph.kodego.md2p.GETDATA"
+                    it.action = "ph.kodego.mdp2.GETDATA"
                     it.putExtra("data", pokemonlist[position].url)
                     context.sendBroadcast(it)
                 }
