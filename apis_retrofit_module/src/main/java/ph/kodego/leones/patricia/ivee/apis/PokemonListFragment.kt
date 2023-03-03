@@ -22,11 +22,7 @@ class PokemonListFragment : Fragment() {
     var pokemonAdapter:PokemonAdapter? = null
     var pokemonList: ArrayList<Pokemon> = ArrayList()
     var binding:FragmentPokemonListBinding? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +38,6 @@ class PokemonListFragment : Fragment() {
 
         getData()
 
-
         return view
     }
 
@@ -55,7 +50,9 @@ class PokemonListFragment : Fragment() {
                 Log.d("API CALL", "Failed API CALL")
             }
 
-            override fun onResponse(call: Call<PokemonListResponse>, response: Response<PokemonListResponse>) {
+            override fun onResponse(call: Call<PokemonListResponse>,
+                                    response: Response<PokemonListResponse>) {
+
                 var response: PokemonListResponse = response!!.body()!!
                 pokemonAdapter!!.setList(response.pokemonList)
 
@@ -63,6 +60,7 @@ class PokemonListFragment : Fragment() {
                 for (pokemon in pokelist){
                     Log.d("API CALL", pokemon.name)
                 }
+                Log.d("API CALL", "Pokemon list size: " + pokemonList.size)
             }
         })
     }

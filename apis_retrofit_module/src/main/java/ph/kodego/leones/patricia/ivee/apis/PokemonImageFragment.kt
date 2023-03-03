@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class PokemonImageFragment : Fragment() {
         override fun onReceive(context: Context?, intent: Intent?) {
             //filterAction
             var imageUrl : String? = intent!!.getStringExtra("data")
+            Log.d("PokemonImageFragment", "Received image URL: $imageUrl")
 
             //if(imageUrl != null)
             imageUrl?.let {
@@ -26,8 +28,8 @@ class PokemonImageFragment : Fragment() {
                     .with(activity!!.applicationContext)
                     .load(it)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .placeholder(R.drawable.egg)
-                    .error(R.drawable.egg)
+                    .placeholder(R.drawable.eggtwo)
+                    .error(R.drawable.eggtwo)
                     .into(binding!!.pokemonImage)
             }
         }
@@ -56,8 +58,28 @@ class PokemonImageFragment : Fragment() {
 
     private fun setupReceiver(){
         val intentFilter = IntentFilter()
-        intentFilter.addAction("ph.kodego.mdp2.broadcast.LOADIMAGEACTION")
+        intentFilter.addAction("ph.kodego.mdp2.LOADIMAGEACTION")
         requireActivity().registerReceiver(receiver,intentFilter)
     }
 
+
 }
+
+//    if (imageUrl != null) {
+//        Picasso.with(requireContext())
+//            .load(imageUrl)
+//            .memoryPolicy(MemoryPolicy.NO_CACHE)
+//            .placeholder(R.drawable.egg)
+//            .error(R.drawable.cracked_egg)
+//            .into(binding!!.pokemonImage, object : Callback {
+//                override fun onSuccess() {
+//                    Log.d("PokemonImageFragment", "Successfully loaded image")
+//                }
+//
+//                override fun onError() {
+//                    Log.e("PokemonImageFragment", "Error loading image")
+//                }
+//            })
+//    } else {
+//        Log.e("PokemonImageFragment", "No image URL found in intent")
+//    }

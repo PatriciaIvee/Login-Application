@@ -16,6 +16,7 @@ import ph.kodego.leones.patricia.ivee.apis.model.PokemonInfoResponse
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Call
+
 class PokemonInfoFragment : Fragment() {
 
     private val receiver = object: BroadcastReceiver(){
