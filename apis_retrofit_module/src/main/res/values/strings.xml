@@ -2,4 +2,9 @@
     <string name="app_name">api</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="moves">Moves</string>
+    <string name="pokemon_image">Pokemon Image</string>
+    <string name="pokemon_picture">POKEMON PICTURE</string>
+    <string name="pokemon_picture_shiny">POKEMON PICTURE SHINY</string>
+    <string name="pokemon_image_shiny">Pokemon Image Shiny</string>
 </resources>

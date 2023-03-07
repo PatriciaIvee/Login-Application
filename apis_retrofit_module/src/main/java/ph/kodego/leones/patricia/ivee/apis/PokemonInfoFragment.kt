@@ -71,10 +71,18 @@ class PokemonInfoFragment : Fragment() {
             ){
                 var response:PokemonInfoResponse = response!!.body()!!
 
+                // Update the TextViews with the Pokemon information
+                binding!!.pokemonId.text = "Pokemon ID: \n${response.id}"
+                binding!!.pokemonName.text = "Pokemon Name: \n${response.name}"
+                binding!!.pokemonHeight.text = "Pokemon Height: \n${response.height}"
+                binding!!.pokemonAbilities.text = "Pokemon Abilities: \n${response.abilities.joinToString(separator = ", ") { it.ability.name }}"
+
+
                 Intent().also{
                     Log.d("Pokemon", "${response.sprites.front_default}")
                     it.setAction("ph.kodego.mdp2.LOADIMAGEACTION")
-                    it.putExtra("data", response.sprites.front_default)
+                    it.putExtra("default_image", response.sprites.front_default)
+                    it.putExtra("shiny_image", response.sprites.front_shiny)
                     context!!.sendBroadcast(it)
                 }
                 Log.d("API INFO CALL", response.name)

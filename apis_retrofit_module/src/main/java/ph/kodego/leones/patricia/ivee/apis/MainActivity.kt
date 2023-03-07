@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity(){
     private val pokemonInfoFragment = PokemonInfoFragment()
     private val pokemonListFragment = PokemonListFragment()
     private val pokemonImageFragment = PokemonImageFragment()
+    private val pokemonMovesFragment = PokemonMovesFragment()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var pokemonInfoAdapter:PokemonInfoAdapter
 
@@ -26,7 +27,9 @@ class MainActivity : AppCompatActivity(){
 
         pokemonInfoAdapter = PokemonInfoAdapter(supportFragmentManager)
         pokemonInfoAdapter.add(pokemonInfoFragment, "Pokemon Information")
+        pokemonInfoAdapter.add(pokemonMovesFragment,"Pokemon Moves")
         pokemonInfoAdapter.add(pokemonImageFragment, "Pokemon Image")
+
         binding.pokemonInfoViewpager.adapter = pokemonInfoAdapter
     }
 

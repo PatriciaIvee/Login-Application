@@ -13,6 +13,7 @@ interface PokemonAPI {
     fun getList(
         @Query("offset") startIndex:Int,
         @Query("limit") limit:Int)
+
             : Call<PokemonListResponse>
 
 

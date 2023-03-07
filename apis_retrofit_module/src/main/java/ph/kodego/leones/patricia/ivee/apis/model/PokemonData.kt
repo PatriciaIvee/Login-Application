@@ -15,9 +15,7 @@ class Pokemon {
 }
 
 class PokemonListResponse{
-
-
-
+    
     @SerializedName("count")
     var count: Int = -1
 
@@ -43,6 +41,9 @@ class PokemonInfoResponse{
 
     @SerializedName("abilities")
     var abilities: ArrayList<PokemonAbilityInfo> = ArrayList<PokemonAbilityInfo>()
+
+    @SerializedName("moves")
+    var moves:ArrayList<PokemonMovesInfo> = ArrayList<PokemonMovesInfo>()
 
     @SerializedName("sprites")
     var sprites:PokemonSprite = PokemonSprite()
@@ -71,4 +72,22 @@ class PokemonAbilityInfo{
 class PokemonSprite{
     @SerializedName("front_default")
     var front_default = ""
+
+    @SerializedName("front_shiny")
+    var front_shiny = ""
 }
+
+class PokemonMove {
+    @SerializedName("name")
+    var name = ""
+
+    @SerializedName("url")
+    var url = ""
+
+}
+
+class PokemonMovesInfo {
+    @SerializedName("move")
+    var move : PokemonMove = PokemonMove()
+}
+

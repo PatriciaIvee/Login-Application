@@ -20,29 +20,52 @@ class PokemonImageFragment : Fragment() {
     private val receiver  = object: BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             //filterAction
-            var imageUrl : String? = intent!!.getStringExtra("data")
-            Log.d("PokemonImageFragment", "Received image URL: $imageUrl")
+            var defaultImageUrl : String? = intent!!.getStringExtra("default_image")
+            var shinyImageUrl : String? = intent!!.getStringExtra("shiny_image")
+            Log.d("PokemonImageFragment", "Received default image URL: $defaultImageUrl")
+            Log.d("PokemonImageFragment", "Received shiny image URL: $shinyImageUrl")
 
-            if (imageUrl != null) {
+            if (defaultImageUrl != null) {
                 Picasso.with(requireContext())
-                    .load(imageUrl)
+                    .load(defaultImageUrl)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .placeholder(R.drawable.cracked_egg)
                     .error(R.drawable.eggtwo)
                     .into(binding!!.pokemonImage, object : Callback {
                         override fun onSuccess() {
-                            Log.d("PokemonImageFragment", "Successfully loaded image")
+                            Log.d("PokemonImageFragment", "Successfully loaded default image")
                         }
 
                         override fun onError() {
-                            Log.e("PokemonImageFragment", "Error loading image")
+                            Log.e("PokemonImageFragment", "Error loading default image")
                         }
                     })
             } else {
-                Log.e("PokemonImageFragment", "No image URL found in intent")
+                Log.e("PokemonImageFragment", "No default image URL found in intent")
             }
 
-//            //if(imageUrl != null)
+            if (shinyImageUrl != null) {
+                Picasso.with(requireContext())
+                    .load(shinyImageUrl)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .placeholder(R.drawable.cracked_egg)
+                    .error(R.drawable.egg)
+                    .into(binding!!.pokemonImageShiny, object : Callback {
+                        override fun onSuccess() {
+                            Log.d("PokemonImageFragment", "Successfully loaded shiny image")
+                        }
+
+                        override fun onError() {
+                            Log.e("PokemonImageFragment", "Error loading shiny image")
+                        }
+                    })
+            } else {
+                Log.e("PokemonImageFragment", "No shiny image URL found in intent")
+            }
+        }
+    }
+
+    //            //if(imageUrl != null)
 //            imageUrl?.let {
 //                Picasso
 //                    .with(activity!!.applicationContext)
@@ -52,9 +75,7 @@ class PokemonImageFragment : Fragment() {
 //                    .error(R.drawable.eggtwo)
 //                    .into(binding!!.pokemonImage)
 //            }
-        }
 
-    }
     var binding: FragmentPokemonImageBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
